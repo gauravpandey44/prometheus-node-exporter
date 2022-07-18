@@ -1,7 +1,7 @@
 pipeline {
   
     agent {
-      label 'homeserver_production && oracle-cloud_production && oracle-cloud2_production' 
+      label('homeserver_production || oracle-cloud_production || oracle-cloud2_production')
     }  
   
      environment {
