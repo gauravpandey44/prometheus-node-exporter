@@ -2,10 +2,10 @@ pipeline {
   
     agent none
   
-     environment {
-            REPO = sh(script: 'echo "${GIT_URL}" | sed -e "s/https:\\/\\/github.com\\/.*\\///" | sed "s/.git//"',returnStdout: true).trim()
-     }
-  
+     // environment {
+     //        REPO = sh(script: 'echo "${GIT_URL}" | sed -e "s/https:\\/\\/github.com\\/.*\\///" | sed "s/.git//"',returnStdout: true).trim()
+     // }
+
     stages {
        stage('Run Build') {
            parallel {
@@ -15,10 +15,7 @@ pipeline {
                     }
                    steps {
 
-                        sh(""" 
-                        mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}
-                        cp -rp ${WORKSPACE}/* /home/${USER}/PRODUCTION/dockers/${REPO}/
-                        """)
+                        echo "homeserver_production"
 
                     }
                 }
@@ -28,11 +25,7 @@ pipeline {
                    }
                    steps {
 
-                        sh(""" 
-                        mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}
-                        cp -rp ${WORKSPACE}/* /home/${USER}/PRODUCTION/dockers/${REPO}/
-                        """)
-
+                        echo "oracle-cloud_production"
                       }
                 }
                  stage('Build on oracle-cloud2') {
@@ -41,10 +34,7 @@ pipeline {
                    }
                    steps {
 
-                        sh(""" 
-                        mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}
-                        cp -rp ${WORKSPACE}/* /home/${USER}/PRODUCTION/dockers/${REPO}/
-                        """)
+                        echo "oracle-cloud2_production"
 
                     }
                 }
