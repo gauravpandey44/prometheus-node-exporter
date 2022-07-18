@@ -135,6 +135,7 @@ pipeline {
 
         }
         }
+     }
      post {
        always {
          echo "Sending Email"
@@ -149,7 +150,6 @@ pipeline {
                     to: '$DEFAULT_RECIPIENTS',
                     mimeType: 'text/html'
        }
-    
-    
-  }
+     }
 }
+
