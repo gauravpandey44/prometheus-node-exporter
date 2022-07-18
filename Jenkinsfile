@@ -1,3 +1,4 @@
+Jenkinsfile
 pipeline {
   
     agent none
@@ -7,50 +8,52 @@ pipeline {
      }
   
     stages {
-           stage('Run Build') {
+       stage('Run Build') {
            parallel {
-                   stage('Build on homeserver') {
-                       agent {
-                        label "homeserver_production"
-                       }
-                       steps {
-
-                            sh(""" 
-                            mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}
-                            cp -rp ${WORKSPACE}/* /home/${USER}/PRODUCTION/dockers/${REPO}/
-                            """)
-
-                          }
+               stage('Build on homeserver') {
+                   agent {
+                    label "homeserver_production"
                     }
-                     stage('Build on oracle-cloud') {
-                       agent {
-                        label "oracle-cloud_production"
-                       }
-                       steps {
+                   steps {
 
-                            sh(""" 
-                            mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}
-                            cp -rp ${WORKSPACE}/* /home/${USER}/PRODUCTION/dockers/${REPO}/
-                            """)
+                        sh(""" 
+                        mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}
+                        cp -rp ${WORKSPACE}/* /home/${USER}/PRODUCTION/dockers/${REPO}/
+                        """)
 
-                          }
                     }
-                     stage('Build on oracle-cloud2') {
-                       agent {
-                        label "oracle-cloud2_production"
-                       }
-                       steps {
+                }
+                 stage('Build on oracle-cloud') {
+                   agent {
+                    label "oracle-cloud_production"
+                   }
+                   steps {
 
-                            sh(""" 
-                            mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}
-                            cp -rp ${WORKSPACE}/* /home/${USER}/PRODUCTION/dockers/${REPO}/
-                            """)
+                        sh(""" 
+                        mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}
+                        cp -rp ${WORKSPACE}/* /home/${USER}/PRODUCTION/dockers/${REPO}/
+                        """)
 
-                          }
+                      }
+                }
+                 stage('Build on oracle-cloud2') {
+                   agent {
+                    label "oracle-cloud2_production"
+                   }
+                   steps {
+
+                        sh(""" 
+                        mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}
+                        cp -rp ${WORKSPACE}/* /home/${USER}/PRODUCTION/dockers/${REPO}/
+                        """)
+
                     }
+                }
 
-          }
-          }
+            }
+        }
+    }
+}  
         //   stage('Run Test') {
         //   parallel {
         //           stage('Test on homeserver') {
@@ -181,7 +184,7 @@ pipeline {
 
         // }
         // }
-     }
+//      }
      
-}
+// }
 
