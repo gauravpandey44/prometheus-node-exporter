@@ -16,9 +16,8 @@ pipeline {
                    steps {
 
                         echo "homeserver_production"
-                        
-                        mkdir -p "/home/${USER}/PRODUCTION/dockers/${REPO}"
-                        cp -rp "${WORKSPACE}/*" "/home/${USER}/PRODUCTION/dockers/${REPO}/"
+                        sh 'mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}'
+                        sh 'cp -rp ${WORKSPACE}/*" "/home/${USER}/PRODUCTION/dockers/${REPO}/'
                 
 
                     }
