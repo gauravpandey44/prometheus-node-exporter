@@ -16,40 +16,40 @@ pipeline {
                    steps {
 
                         echo "homeserver_production"
-                        sh(""" 
+                        
                         mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}
-                        cp -rp ${WORKSPACE}/* /home/${USER}/PRODUCTION/dockers/${REPO}/
-                        """)
+                        cp -rp "${WORKSPACE}/*" /home/${USER}/PRODUCTION/dockers/${REPO}/
+                
 
                     }
                 }
-                 stage('Build on oracle-cloud') {
-                   agent {
-                    label "oracle-cloud_production"
-                   }
-                   steps {
+                //  stage('Build on oracle-cloud') {
+                //    agent {
+                //     label "oracle-cloud_production"
+                //    }
+                //    steps {
 
-                        echo "oracle-cloud_production"
-                        sh(""" 
-                        mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}
-                        cp -rp ${WORKSPACE}/* /home/${USER}/PRODUCTION/dockers/${REPO}/
-                        """)
-                      }
-                }
-                 stage('Build on oracle-cloud2') {
-                   agent {
-                    label "oracle-cloud2_production"
-                   }
-                   steps {
+                //         echo "oracle-cloud_production"
+                //         sh(""" 
+                //         mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}
+                //         cp -rp ${WORKSPACE}/* /home/${USER}/PRODUCTION/dockers/${REPO}/
+                //         """)
+                //       }
+                // }
+                //  stage('Build on oracle-cloud2') {
+                //    agent {
+                //     label "oracle-cloud2_production"
+                //    }
+                //    steps {
 
-                        echo "oracle-cloud2_production"
-                        sh(""" 
-                        mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}
-                        cp -rp ${WORKSPACE}/* /home/${USER}/PRODUCTION/dockers/${REPO}/
-                        """)
+                //         echo "oracle-cloud2_production"
+                //         sh(""" 
+                //         mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}
+                //         cp -rp ${WORKSPACE}/* /home/${USER}/PRODUCTION/dockers/${REPO}/
+                //         """)
 
-                    }
-                }
+                //     }
+                // }
 
             }
         }
