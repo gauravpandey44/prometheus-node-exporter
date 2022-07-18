@@ -17,8 +17,8 @@ pipeline {
 
                         echo "homeserver_production"
                         
-                        mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}
-                        cp -rp "${WORKSPACE}/*" /home/${USER}/PRODUCTION/dockers/${REPO}/
+                        mkdir -p "/home/${USER}/PRODUCTION/dockers/${REPO}"
+                        cp -rp "${WORKSPACE}/*" "/home/${USER}/PRODUCTION/dockers/${REPO}/"
                 
 
                     }
