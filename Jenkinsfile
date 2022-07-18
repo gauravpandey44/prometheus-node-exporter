@@ -55,6 +55,46 @@ pipeline {
 
             }
         }
+        stage('Run Test') {
+            parallel {
+                    stage('Test on homeserver') {
+                       agent {
+                        label "homeserver_production"
+                       }
+                       steps {
+
+                            sh(""" 
+                            echo "TESTING"
+                            """)
+
+                        }
+                    }
+                    stage('Test on oracle-cloud') {
+                       agent {
+                        label "oracle-cloud_production"
+                       }
+                        steps {
+
+                            sh(""" 
+                            echo "TESTING"
+                            """)
+
+                        }
+                    }
+                     stage('Test on oracle-cloud2') {
+                           agent {
+                            label "oracle-cloud2_production"
+                           }
+                           steps {
+
+                                sh(""" 
+                                echo "TESTING"
+                                """)
+
+                            }
+                    }
+             }
+         }
     }
 }  
      
