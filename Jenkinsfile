@@ -133,22 +133,23 @@ pipeline {
                           """)
                     }
 
+                      post {
+                           always {
+                             echo "Sending Email"
+                             emailext subject: '$DEFAULT_SUBJECT',
+                                        body:  ''' 
+                                            $DEFAULT_CONTENT
+                                          ''',
+                                        recipientProviders: [
+                                            [$class: 'RequesterRecipientProvider']
+                                        ], 
+                                        replyTo: '$DEFAULT_REPLYTO',
+                                        to: '$DEFAULT_RECIPIENTS',
+                                        mimeType: 'text/html'
+                           }
+                      }
                   }
-                   post {
-                       always {
-                         echo "Sending Email"
-                         emailext subject: '$DEFAULT_SUBJECT',
-                                    body:  ''' 
-                                        $DEFAULT_CONTENT
-                                      ''',
-                                    recipientProviders: [
-                                        [$class: 'RequesterRecipientProvider']
-                                    ], 
-                                    replyTo: '$DEFAULT_REPLYTO',
-                                    to: '$DEFAULT_RECIPIENTS',
-                                    mimeType: 'text/html'
-                       }
-                  }
+ 
                  stage('Deploy on oracle-cloud2') {
                     agent {
                         label "oracle-cloud2_production"
@@ -160,8 +161,6 @@ pipeline {
                           docker-compose up -d
                           """)
                     }
-
-                  }
                    post {
                        always {
                          echo "Sending Email"
@@ -177,6 +176,8 @@ pipeline {
                                     mimeType: 'text/html'
                        }
                   }
+                }
+
 
         }
         }
