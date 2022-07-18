@@ -95,6 +95,94 @@ pipeline {
                     }
              }
          }
+         stage('Run Deploy') {
+            parallel {
+                stage('Deploy on homeserver') {
+                    agent {
+                        label "homeserver_production"
+                    }
+                    steps {
+
+                          sh("""
+                          cd /home/${USER}/PRODUCTION/dockers/${REPO}/
+                          docker-compose up -d
+                          """)
+                    }
+                    post {
+                        always {
+                            echo "Sending Email"
+                            emailext subject: '$DEFAULT_SUBJECT',
+                            body:  ''' 
+                                $DEFAULT_CONTENT
+                              ''',
+                            recipientProviders: [
+                                [$class: 'RequesterRecipientProvider']
+                            ], 
+                            replyTo: '$DEFAULT_REPLYTO',
+                            to: '$DEFAULT_RECIPIENTS',
+                            mimeType: 'text/html'
+                       }
+                    }
+
+                }
+               stage('Deploy on oracle-cloud') {
+                    agent {
+                        label "oracle-cloud_production"
+                    }
+                    steps {
+
+                          sh("""
+                          cd /home/${USER}/PRODUCTION/dockers/${REPO}/
+                          docker-compose up -d
+                          """)
+                    }
+                    post {
+                        always {
+                            echo "Sending Email"
+                            emailext subject: '$DEFAULT_SUBJECT',
+                            body:  ''' 
+                                $DEFAULT_CONTENT
+                              ''',
+                            recipientProviders: [
+                                [$class: 'RequesterRecipientProvider']
+                            ], 
+                            replyTo: '$DEFAULT_REPLYTO',
+                            to: '$DEFAULT_RECIPIENTS',
+                            mimeType: 'text/html'
+                       }
+                    }
+
+                }
+               stage('Deploy on oracle-cloud2') {
+                    agent {
+                        label "oracle-cloud2_production"
+                    }
+                    steps {
+
+                          sh("""
+                          cd /home/${USER}/PRODUCTION/dockers/${REPO}/
+                          docker-compose up -d
+                          """)
+                    }
+                    post {
+                        always {
+                            echo "Sending Email"
+                            emailext subject: '$DEFAULT_SUBJECT',
+                            body:  ''' 
+                                $DEFAULT_CONTENT
+                              ''',
+                            recipientProviders: [
+                                [$class: 'RequesterRecipientProvider']
+                            ], 
+                            replyTo: '$DEFAULT_REPLYTO',
+                            to: '$DEFAULT_RECIPIENTS',
+                            mimeType: 'text/html'
+                       }
+                    }
+
+                }
+            }
+        }
     }
 }  
      
