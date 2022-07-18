@@ -1,46 +1,140 @@
 pipeline {
   
-    agent {
-      label 'all_production'
-    }  
+    agent none
   
      environment {
             REPO = sh(script: 'echo "${GIT_URL}" | sed -e "s/https:\\/\\/github.com\\/.*\\///" | sed "s/.git//"',returnStdout: true).trim()
      }
   
     stages {
+           stage('Run Build') {
+           parallel {
+                   stage('Build on homeserver') {
+                       agent {
+                        label "homeserver_production"
+                       }
+                       steps {
 
-           stage('Build') {
-               steps {
+                            sh(""" 
+                            mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}
+                            cp -rp ${WORKSPACE}/* /home/${USER}/PRODUCTION/dockers/${REPO}/
+                            """)
 
-                    sh(""" 
-                    mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}
-                    cp -rp ${WORKSPACE}/* /home/${USER}/PRODUCTION/dockers/${REPO}/
-                    """)
+                          }
+                    }
+                     stage('Build on oracle-cloud') {
+                       agent {
+                        label "oracle-cloud_production"
+                       }
+                       steps {
 
-                  }
-            }
-          stage('TEST') {
-               steps {
+                            sh(""" 
+                            mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}
+                            cp -rp ${WORKSPACE}/* /home/${USER}/PRODUCTION/dockers/${REPO}/
+                            """)
 
-                    sh(""" 
-                    echo "TESTING"
-                    """)
+                          }
+                    }
+                     stage('Build on oracle-cloud2') {
+                       agent {
+                        label "oracle-cloud2_production"
+                       }
+                       steps {
 
-                  }
-            }
-          stage('Deploy') {
-            steps {
+                            sh(""" 
+                            mkdir -p /home/${USER}/PRODUCTION/dockers/${REPO}
+                            cp -rp ${WORKSPACE}/* /home/${USER}/PRODUCTION/dockers/${REPO}/
+                            """)
 
-                  sh("""
-                  cd /home/${USER}/PRODUCTION/dockers/${REPO}/
-                  docker-compose up -d
-                  """)
-            }
+                          }
+                    }
 
           }
+          }
+          stage('Run Test') {
+          parallel {
+                  stage('Test on homeserver') {
+                       agent {
+                        label "homeserver_production"
+                       }
+                       steps {
 
-     }
+                            sh(""" 
+                            echo "TESTING"
+                            """)
+
+                          }
+                    }
+                  stage('Test on oracle-cloud') {
+                       agent {
+                        label "oracle-cloud_production"
+                       }
+                       steps {
+
+                            sh(""" 
+                            echo "TESTING"
+                            """)
+
+                          }
+                    }
+                 stage('Test on oracle-cloud2') {
+                       agent {
+                        label "oracle-cloud2_production"
+                       }
+                       steps {
+
+                            sh(""" 
+                            echo "TESTING"
+                            """)
+
+                          }
+                    }
+         }
+         }
+          stage('Run Deploy') {
+          parallel {
+                  stage('Deploy on homeserver') {
+                    agent {
+                        label "homeserver_production"
+                    }
+                    steps {
+
+                          sh("""
+                          cd /home/${USER}/PRODUCTION/dockers/${REPO}/
+                          docker-compose up -d
+                          """)
+                    }
+
+                  }
+                 stage('Deploy on oracle-cloud') {
+                    agent {
+                        label "oracle-cloud_production"
+                    }
+                    steps {
+
+                          sh("""
+                          cd /home/${USER}/PRODUCTION/dockers/${REPO}/
+                          docker-compose up -d
+                          """)
+                    }
+
+                  }
+                 stage('Deploy on oracle-cloud2') {
+                    agent {
+                        label "oracle-cloud2_production"
+                    }
+                    steps {
+
+                          sh("""
+                          cd /home/${USER}/PRODUCTION/dockers/${REPO}/
+                          docker-compose up -d
+                          """)
+                    }
+
+                  }
+
+        }
+        }
      post {
        always {
          echo "Sending Email"
