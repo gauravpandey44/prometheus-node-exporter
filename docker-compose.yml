@@ -7,8 +7,11 @@ services:
     container_name: node_exporter
     command:
       - '--path.rootfs=/host'
+      - '--web.config=/web.yml'
     network_mode: host
     pid: host
     restart: unless-stopped
     volumes:
       - '/:/host:ro,rslave'
+      - './web.yml:/web.yml'
+
