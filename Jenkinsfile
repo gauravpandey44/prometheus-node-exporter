@@ -1,4 +1,5 @@
-pipeline {
+pipeline 
+{
     agent none
     environment 
     {
@@ -27,8 +28,8 @@ pipeline {
 
                     }
                 }
-                 stage('Build on oracle-cloud') 
-                 {
+                stage('Build on oracle-cloud') 
+                {
                    agent 
                    {
                          label "oracle-cloud_production"
@@ -58,7 +59,7 @@ pipeline {
                         cp -rp ${WORKSPACE}/* /home/${USER}/PRODUCTION/dockers/${REPO}/
                         """)
 
-                    }
+                   }
                 }
 
             }
@@ -73,7 +74,8 @@ pipeline {
                    {
                     label "homeserver_production"
                    }
-                   steps {
+                   steps 
+                   {
 
                         sh(""" 
                         echo "TESTING"
@@ -102,7 +104,8 @@ pipeline {
                    {
                          label "oracle-cloud2_production"
                    }
-                   steps {
+                   steps 
+                   {
 
                         sh(""" 
                         echo "TESTING"
@@ -110,10 +113,10 @@ pipeline {
 
                     }
                 }
-             }
-         }
-         stage('Run Deploy') 
-         {
+            }
+        }
+        stage('Run Deploy') 
+        {
             parallel 
             {
                 stage('Deploy on homeserver') 
@@ -138,7 +141,8 @@ pipeline {
                     {
                         label "oracle-cloud_production"
                     }
-                    steps {
+                    steps 
+                    {
 
                           sh("""
                           cd /home/${USER}/PRODUCTION/dockers/${REPO}/
@@ -153,7 +157,8 @@ pipeline {
                     {
                         label "oracle-cloud2_production"
                     }
-                    steps {
+                    steps 
+                    {
 
                           sh("""
                           cd /home/${USER}/PRODUCTION/dockers/${REPO}/
@@ -164,22 +169,22 @@ pipeline {
             }
         }
     }
-    post 
-    {
-        always 
-        {
-            echo "Sending Email"
-            emailext subject: '$DEFAULT_SUBJECT',
-            body:  ''' 
-                $DEFAULT_CONTENT
-              ''',
-            recipientProviders: [
-                [$class: 'RequesterRecipientProvider']
-            ], 
-            replyTo: '$DEFAULT_REPLYTO',
-            to: '$DEFAULT_RECIPIENTS',
-            mimeType: 'text/html'
-       }
-    }
+    // post 
+    // {
+    //     always 
+    //     {
+    //         echo "Sending Email"
+    //         emailext subject: '$DEFAULT_SUBJECT',
+    //         body:  ''' 
+    //             $DEFAULT_CONTENT
+    //           ''',
+    //         recipientProviders: [
+    //             [$class: 'RequesterRecipientProvider']
+    //         ], 
+    //         replyTo: '$DEFAULT_REPLYTO',
+    //         to: '$DEFAULT_RECIPIENTS',
+    //         mimeType: 'text/html'
+    //    }
+    // }
 }  
      
