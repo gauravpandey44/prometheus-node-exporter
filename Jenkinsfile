@@ -1,6 +1,6 @@
 pipeline 
 {
-    agent none
+    agent any
     environment 
     {
             REPO = sh(script: 'echo "${GIT_URL}" | sed -e "s/https:\\/\\/github.com\\/.*\\///" | sed "s/.git//"',returnStdout: true).trim()
