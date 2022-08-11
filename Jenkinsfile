@@ -169,22 +169,22 @@ pipeline
             }
         }
     }
-    // post 
-    // {
-    //     always 
-    //     {
-    //         echo "Sending Email"
-    //         emailext subject: '$DEFAULT_SUBJECT',
-    //         body:  ''' 
-    //             $DEFAULT_CONTENT
-    //           ''',
-    //         recipientProviders: [
-    //             [$class: 'RequesterRecipientProvider']
-    //         ], 
-    //         replyTo: '$DEFAULT_REPLYTO',
-    //         to: '$DEFAULT_RECIPIENTS',
-    //         mimeType: 'text/html'
-    //    }
-    // }
+    post 
+    {
+        always 
+        {
+            echo "Sending Email"
+            emailext subject: '$DEFAULT_SUBJECT',
+            body:  ''' 
+                $DEFAULT_CONTENT
+              ''',
+            recipientProviders: [
+                [$class: 'RequesterRecipientProvider']
+            ], 
+            replyTo: '$DEFAULT_REPLYTO',
+            to: '$DEFAULT_RECIPIENTS',
+            mimeType: 'text/html'
+       }
+    }
 }  
      
