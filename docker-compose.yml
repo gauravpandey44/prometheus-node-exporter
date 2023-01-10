@@ -7,7 +7,7 @@ services:
     container_name: node_exporter
     command:
       - '--path.rootfs=/host'
-      - '--web.config=/web.yml'
+      - '--web.config.file=/web.yml'
     network_mode: host
     pid: host
     restart: unless-stopped
